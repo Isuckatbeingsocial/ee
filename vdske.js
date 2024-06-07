@@ -20,12 +20,15 @@ class WINDOWAPI {
         windowElement.style.overflow = 'auto';
         windowElement.style.fontFamily = 'Arial, sans-serif';
 
-        const titleBar = document.createElement('div');
-        titleBar.className = 'title-bar';
-        titleBar.style.backgroundColor = '#111';
-        titleBar.style.fontFamily = 'Arial, sans-serif';
-        titleBar.textContent = title;
-        windowElement.appendChild(titleBar);
+const titleBar = document.createElement('div');
+titleBar.className = 'title-bar';
+titleBar.style.backgroundColor = '#111';
+titleBar.style.fontFamily = 'Arial, sans-serif';
+titleBar.style.fontSize = '14px';
+titleBar.textContent = title;
+
+windowElement.appendChild(titleBar);
+
 
         const closeButton = document.createElement('button');
         closeButton.className = 'close-button';
