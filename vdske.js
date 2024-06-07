@@ -20,15 +20,14 @@ class WINDOWAPI {
         windowElement.style.overflow = 'auto';
         windowElement.style.fontFamily = 'Arial, sans-serif';
 
-const titleBar = document.createElement('div');
-titleBar.className = 'title-bar';
-titleBar.style.backgroundColor = '#111';
-titleBar.style.fontFamily = 'Arial, sans-serif';
-titleBar.style.fontSize = '14px';
-titleBar.textContent = title;
+        const titleBar = document.createElement('div');
+        titleBar.className = 'title-bar';
+        titleBar.style.backgroundColor = '#111';
+        titleBar.style.fontFamily = 'Arial, sans-serif';
+        titleBar.style.fontSize = '14px';
+        titleBar.textContent = title;
 
-windowElement.appendChild(titleBar);
-
+        windowElement.appendChild(titleBar);
 
         const closeButton = document.createElement('button');
         closeButton.className = 'close-button';
@@ -38,6 +37,7 @@ windowElement.appendChild(titleBar);
         closeButton.style.color = '#fff';
         closeButton.style.backgroundColor = '#111';
         closeButton.style.right = '0';
+        closeButton.style.height = `${titleBar.clientHeight}px`;
         closeButton.style.boxShadow = 'none';
         closeButton.style.border = 'none';
         closeButton.style.outline = 'none';
@@ -57,7 +57,8 @@ windowElement.appendChild(titleBar);
         minButton.style.top = '0';
         minButton.style.color = '#fff';
         minButton.style.backgroundColor = '#111';
-        minButton.style.right = '40px';
+        minButton.style.right = `${closeButton.clientWidth}px`;
+        minButton.style.height = `${titleBar.clientHeight}px`;
         minButton.style.boxShadow = 'none';
         minButton.style.border = 'none';
         minButton.style.outline = 'none';
