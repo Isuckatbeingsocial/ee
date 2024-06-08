@@ -57,7 +57,7 @@ class WINDOWAPI {
         minButton.style.top = '0';
         minButton.style.color = '#fff';
         minButton.style.backgroundColor = '#111';
-        minButton.style.right = `${closeButton.clientWidth}px`;
+        minButton.style.right = `30px`;
         minButton.style.height = `${titleBar.clientHeight}px`;
         minButton.style.boxShadow = 'none';
         minButton.style.border = 'none';
