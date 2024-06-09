@@ -72,10 +72,12 @@ class WINDOWAPI {
         let isMinimized = false;
         minButton.addEventListener('click', () => {
             if (!isMinimized) {
+               if (resizable) {
                 windowElement.style.height = `20px`;
                 windowElement.querySelector('.content').style.display = 'none';
                 windowElement.querySelector('.resize-handle').style.display = 'none';
                 isMinimized = true;
+               }
             } else {
                 windowElement.style.height = `${height}px`;
                 windowElement.querySelector('.content').style.display = 'block';
