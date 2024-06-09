@@ -4,7 +4,7 @@ class WINDOWAPI {
         this.defaultWidth = 400;
         this.defaultHeight = 300;
         this.resizeHandleSize = 10;
-        this.draggedWindow = null; // Track the dragged window
+        this.zIndexCounter = 1; // Initialize z-index counter
     }
 
     createWindow(title, width = this.defaultWidth, height = this.defaultHeight) {
@@ -20,6 +20,7 @@ class WINDOWAPI {
         windowElement.style.resize = 'both';
         windowElement.style.overflow = 'auto';
         windowElement.style.fontFamily = 'Arial, sans-serif';
+        windowElement.style.zIndex = this.zIndexCounter++; // Set initial z-index and increment counter
 
         const titleBar = document.createElement('div');
         titleBar.className = 'title-bar';
@@ -106,7 +107,7 @@ class WINDOWAPI {
             isDragging = true;
             offset.x = e.clientX - windowElement.getBoundingClientRect().left;
             offset.y = e.clientY - windowElement.getBoundingClientRect().top;
-            this.setDragged(windowElement); // Set the dragged window
+            this.bringToFront(windowElement); // Bring the dragged window to front
         });
 
         resizeHandle.addEventListener('mousedown', (e) => {
@@ -114,7 +115,7 @@ class WINDOWAPI {
             const rect = windowElement.getBoundingClientRect();
             offset.x = e.clientX - rect.right;
             offset.y = e.clientY - rect.bottom;
-            this.setDragged(windowElement); // Set the dragged window
+            this.bringToFront(windowElement); // Bring the dragged window to front
         });
 
         window.addEventListener('mousemove', (e) => {
@@ -134,7 +135,6 @@ class WINDOWAPI {
         window.addEventListener('mouseup', () => {
             isDragging = false;
             isResizing = false;
-            this.resetZIndex(); // Reset zIndex for all windows
         });
 
         document.body.appendChild(windowElement);
@@ -143,21 +143,18 @@ class WINDOWAPI {
         return windowElement;
     }
 
-    setDragged(windowElement) {
-        this.draggedWindow = windowElement;
-        this.bringToFront(windowElement); // Bring the dragged window to the front
-    }
-
     bringToFront(windowElement) {
-        this.maxZIndex++; // Increment zIndex for bringing to front
-        windowElement.style.zIndex = this.maxZIndex;
+        const currentIndex = this.windows.indexOf(windowElement);
+        if (currentIndex !== -1) {
+            this.windows.splice(currentIndex, 1); // Remove from current position
+            this.windows.push(windowElement); // Append at the end to bring to front
+            this.updateZIndex(); // Update z-index for all windows
+        }
     }
 
-    resetZIndex() {
-        this.windows.forEach((win) => {
-            if (win !== this.draggedWindow) {
-                win.style.zIndex = 1111; // Set zIndex for other windows
-            }
+    updateZIndex() {
+        this.windows.forEach((win, index) => {
+            win.style.zIndex = index + 1; // Set z-index based on order in the array
         });
     }
 }
