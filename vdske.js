@@ -105,6 +105,7 @@ class WINDOWAPI {
             isDragging = true;
             offset.x = e.clientX - windowElement.getBoundingClientRect().left;
             offset.y = e.clientY - windowElement.getBoundingClientRect().top;
+            this.bringToFront(windowElement); // Bring the window to the front
         });
 
         resizeHandle.addEventListener('mousedown', (e) => {
@@ -112,6 +113,7 @@ class WINDOWAPI {
             const rect = windowElement.getBoundingClientRect();
             offset.x = e.clientX - rect.right;
             offset.y = e.clientY - rect.bottom;
+            this.bringToFront(windowElement); // Bring the window to the front
         });
 
         window.addEventListener('mousemove', (e) => {
@@ -135,8 +137,15 @@ class WINDOWAPI {
 
         document.body.appendChild(windowElement);
         this.windows.push(windowElement);
+        
+        this.bringToFront(windowElement); // Bring the window to the front when created
 
         return windowElement;
+    }
+
+    bringToFront(windowElement) {
+        const maxZIndex = Math.max(...this.windows.map(win => parseInt(win.style.zIndex) || 0));
+        windowElement.style.zIndex = maxZIndex + 1;
     }
 }
 
