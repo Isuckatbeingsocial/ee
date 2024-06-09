@@ -6,12 +6,14 @@ class WINDOWAPI {
         this.resizeHandleSize = 10;
     }
 
-    createWindow(title, width = this.defaultWidth, height = this.defaultHeight) {
+    createWindow(title, width = this.defaultWidth, height = this.defaultHeight, initialX = 0, initialY = 0) {
         const windowElement = document.createElement('div');
         windowElement.className = 'window';
         windowElement.style.width = `${width}px`;
         windowElement.style.height = `${height}px`;
         windowElement.style.position = 'absolute';
+        windowElement.style.left = `${initialX}px`; // Set initial x position
+        windowElement.style.top = `${initialY}px`; // Set initial y position
         windowElement.style.border = '1px solid #333';
         windowElement.style.backgroundColor = '#222';
         windowElement.style.color = '#fff';
@@ -68,25 +70,23 @@ class WINDOWAPI {
         minButton.style.mozAppearance = 'none';
         minButton.style.appearance = 'none';
         let isMinimized = false;
-minButton.addEventListener('click', () => {
-    if (!isMinimized) {
-        windowElement.style.height = `20px`;
-        windowElement.querySelector('.content').style.display = 'none';
-        windowElement.querySelector('.resize-handle').style.display = 'none';
-        resizeHandle.style.width = '0';
-        resizeHandle.style.height = '0';
-        isMinimized = true;
-    } else {
-        windowElement.style.height = `${height}px`;
-        windowElement.querySelector('.content').style.display = 'block';
-        windowElement.querySelector('.resize-handle').style.display = 'block';
-        resizeHandle.style.width = `${this.resizeHandleSize}px`;
-        resizeHandle.style.height = `${this.resizeHandleSize}px`;
-        isMinimized = false;
-    }
-});
-
-
+        minButton.addEventListener('click', () => {
+            if (!isMinimized) {
+                windowElement.style.height = `20px`;
+                windowElement.querySelector('.content').style.display = 'none';
+                windowElement.querySelector('.resize-handle').style.display = 'none';
+                resizeHandle.style.width = '0';
+                resizeHandle.style.height = '0';
+                isMinimized = true;
+            } else {
+                windowElement.style.height = `${height}px`;
+                windowElement.querySelector('.content').style.display = 'block';
+                windowElement.querySelector('.resize-handle').style.display = 'block';
+                resizeHandle.style.width = `${this.resizeHandleSize}px`;
+                resizeHandle.style.height = `${this.resizeHandleSize}px`;
+                isMinimized = false;
+            }
+        });
 
         titleBar.appendChild(closeButton);
         titleBar.appendChild(minButton);
