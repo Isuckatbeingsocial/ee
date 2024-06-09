@@ -4,7 +4,6 @@ class WINDOWAPI {
         this.defaultWidth = 400;
         this.defaultHeight = 300;
         this.resizeHandleSize = 10;
-        this.zIndexCounter = 1; // Initialize z-index counter
     }
 
     createWindow(title, width = this.defaultWidth, height = this.defaultHeight) {
@@ -20,7 +19,7 @@ class WINDOWAPI {
         windowElement.style.resize = 'both';
         windowElement.style.overflow = 'auto';
         windowElement.style.fontFamily = 'Arial, sans-serif';
-        windowElement.style.zIndex = this.zIndexCounter++; // Set initial z-index and increment counter
+        windowElement.style.zIndex = 1111; // Set initial z-index
 
         const titleBar = document.createElement('div');
         titleBar.className = 'title-bar';
@@ -69,19 +68,25 @@ class WINDOWAPI {
         minButton.style.mozAppearance = 'none';
         minButton.style.appearance = 'none';
         let isMinimized = false;
-        minButton.addEventListener('click', () => {
-            if (!isMinimized) {
-                windowElement.style.height = `20px`;
-                windowElement.querySelector('.content').style.display = 'none';
-                windowElement.querySelector('.resize-handle').style.display = 'none';
-                isMinimized = true;
-            } else {
-                windowElement.style.height = `${height}px`;
-                windowElement.querySelector('.content').style.display = 'block';
-                windowElement.querySelector('.resize-handle').style.display = 'block';
-                isMinimized = false;
-            }
-        });
+minButton.addEventListener('click', () => {
+    if (!isMinimized) {
+        windowElement.style.height = `20px`;
+        windowElement.querySelector('.content').style.display = 'none';
+        windowElement.querySelector('.resize-handle').style.display = 'none';
+        resizeHandle.style.width = '0';
+        resizeHandle.style.height = '0';
+        isMinimized = true;
+    } else {
+        windowElement.style.height = `${height}px`;
+        windowElement.querySelector('.content').style.display = 'block';
+        windowElement.querySelector('.resize-handle').style.display = 'block';
+        resizeHandle.style.width = `${this.resizeHandleSize}px`;
+        resizeHandle.style.height = `${this.resizeHandleSize}px`;
+        isMinimized = false;
+    }
+});
+
+
 
         titleBar.appendChild(closeButton);
         titleBar.appendChild(minButton);
@@ -146,16 +151,12 @@ class WINDOWAPI {
     bringToFront(windowElement) {
         const currentIndex = this.windows.indexOf(windowElement);
         if (currentIndex !== -1) {
-            this.windows.splice(currentIndex, 1); // Remove from current position
-            this.windows.push(windowElement); // Append at the end to bring to front
-            this.updateZIndex(); // Update z-index for all windows
+            this.windows.splice(currentIndex, 1);
+            this.windows.push(windowElement);
+            this.windows.forEach((win, index) => {
+                win.style.zIndex = index === this.windows.length - 1 ? 5555 : 1111;
+            });
         }
-    }
-
-    updateZIndex() {
-        this.windows.forEach((win, index) => {
-            win.style.zIndex = index + 1; // Set z-index based on order in the array
-        });
     }
 }
 
