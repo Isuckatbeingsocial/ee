@@ -4,6 +4,7 @@ class WINDOWAPI {
         this.defaultWidth = 400;
         this.defaultHeight = 300;
         this.resizeHandleSize = 10;
+        this.draggedWindow = null; // Track the dragged window
     }
 
     createWindow(title, width = this.defaultWidth, height = this.defaultHeight) {
@@ -105,7 +106,7 @@ class WINDOWAPI {
             isDragging = true;
             offset.x = e.clientX - windowElement.getBoundingClientRect().left;
             offset.y = e.clientY - windowElement.getBoundingClientRect().top;
-            windowElement.style.zIndex = 5555; // Set zIndex when dragging
+            this.setDragged(windowElement); // Set the dragged window
         });
 
         resizeHandle.addEventListener('mousedown', (e) => {
@@ -113,7 +114,7 @@ class WINDOWAPI {
             const rect = windowElement.getBoundingClientRect();
             offset.x = e.clientX - rect.right;
             offset.y = e.clientY - rect.bottom;
-            windowElement.style.zIndex = 5555; // Set zIndex when resizing
+            this.setDragged(windowElement); // Set the dragged window
         });
 
         window.addEventListener('mousemove', (e) => {
@@ -133,12 +134,31 @@ class WINDOWAPI {
         window.addEventListener('mouseup', () => {
             isDragging = false;
             isResizing = false;
+            this.resetZIndex(); // Reset zIndex for all windows
         });
 
         document.body.appendChild(windowElement);
         this.windows.push(windowElement);
 
         return windowElement;
+    }
+
+    setDragged(windowElement) {
+        this.draggedWindow = windowElement;
+        this.bringToFront(windowElement); // Bring the dragged window to the front
+    }
+
+    bringToFront(windowElement) {
+        this.maxZIndex++; // Increment zIndex for bringing to front
+        windowElement.style.zIndex = this.maxZIndex;
+    }
+
+    resetZIndex() {
+        this.windows.forEach((win) => {
+            if (win !== this.draggedWindow) {
+                win.style.zIndex = 1111; // Set zIndex for other windows
+            }
+        });
     }
 }
 
